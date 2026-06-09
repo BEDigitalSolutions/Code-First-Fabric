@@ -19,9 +19,16 @@ After expiration, download latest release and replace old `cff.exe`.
 
 ## Installation
 
-1. Download latest `cff.exe` from Releases.
-2. Move `cff.exe` to a folder in your PATH, for example `C:\Tools\CFF\cff.exe`.
-3. Install Azure CLI:
+1. Download latest `cff.exe` from Releases or by clicking [here](https://github.com/BEDigitalSolutions/Code-First-Fabric/releases/download/v2026.07.31/cff.exe)
+2. Move `cff.exe` to a folder in your PATH, or run the following command in terminal:
+
+   ```powershell
+   New-Item -ItemType Directory -Path C:\Tools\CFF -Force
+   Copy-Item .\cff.exe C:\Tools\CFF\cff.exe -Force
+   cff --help
+   ```
+
+3. Install Azure CLI by running the following command in terminal:
 
    ```powershell
    winget install --exact --id Microsoft.AzureCLI
@@ -42,35 +49,30 @@ Default login:
 
 ```powershell
 az login
-cff login
 ```
 
 Tenant has no Azure subscriptions:
 
 ```powershell
 az login --allow-no-subscriptions
-cff login
 ```
 
 Browser login blocked or remote shell:
 
 ```powershell
 az login --use-device-code
-cff login
 ```
 
 Force tenant:
 
 ```powershell
 az login --tenant <tenant-id>
-cff login
 ```
 
 Device code + tenant:
 
 ```powershell
 az login --use-device-code --tenant <tenant-id>
-cff login
 ```
 
 Full auth notes: [docs/configuration.md](docs/configuration.md)
