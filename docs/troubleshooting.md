@@ -19,14 +19,12 @@ Run:
 
 ```powershell
 az login
-cff login
 ```
 
 If tenant has no subscriptions:
 
 ```powershell
 az login --allow-no-subscriptions
-cff login
 ```
 
 ## Browser Login Fails
@@ -35,7 +33,6 @@ Use device code:
 
 ```powershell
 az login --use-device-code
-cff login
 ```
 
 ## Wrong Tenant
@@ -44,14 +41,12 @@ Force tenant:
 
 ```powershell
 az login --tenant <tenant-id>
-cff login
 ```
 
 Device code + tenant:
 
 ```powershell
 az login --use-device-code --tenant <tenant-id>
-cff login
 ```
 
 ## Build Expired
