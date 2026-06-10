@@ -20,11 +20,19 @@ After expiration, download latest release and replace old `cff.exe`.
 ## Installation
 
 1. Download latest `cff.exe` from Releases or by clicking [here](https://github.com/BEDigitalSolutions/Code-First-Fabric/releases/download/v2026.07.31/cff.exe)
-2. Move `cff.exe` to a folder in your PATH, or run the following command in terminal:
+2. Move `cff.exe` to a folder in your PATH. Alternatively, run the following command in terminal, adding the correct path to `cff.exe` and the desired directory to add to your PATH:
 
    ```powershell
-   New-Item -ItemType Directory -Path C:\Tools\CFF -Force
-   Copy-Item .\cff.exe C:\Tools\CFF\cff.exe -Force
+   $cffExe = "C:\path\to\cff.exe"
+   $dir = "C:\Tools\CFF"
+   
+   mkdir $dir -Force
+   cp $cffExe "$dir\cff.exe" -Force
+   
+   $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+   [Environment]::SetEnvironmentVariable("Path", "$userPath;$dir", "User")
+   
+   $env:Path += ";$dir"
    cff --help
    ```
 
@@ -34,7 +42,7 @@ After expiration, download latest release and replace old `cff.exe`.
    winget install --exact --id Microsoft.AzureCLI
    ```
 
-4. Restart terminal.
+4. Restart terminal. If using VS Code, restart it as well.
 5. Verify install:
 
    ```powershell
