@@ -1,150 +1,77 @@
 # Code First Fabric
 
-Code First Fabric (CFF) is a Windows command-line tool for working with Microsoft Fabric artifacts as code.
+Code First Fabric is a command-line tool for data engineers who want to work with Microsoft Fabric from local files, Git, editors, terminals, and automated workflows.
 
-This public distribution contains evaluation builds of `cff.exe`, plus installation, configuration, and usage documentation.
+It lets you pull supported Fabric workspace artifacts into a local source tree, inspect and change them like code, push updates back to Fabric, run validation queries, move Lakehouse files, and diagnose failed pipeline runs without jumping between disconnected screens.
 
-## Evaluation Build
+## Why Use It
 
-Current build expires on `2026-07-31` at `00:00 UTC`.
+Microsoft Fabric is powerful, but day-to-day engineering work often needs more than a browser UI. Code First Fabric helps make Fabric projects easier to develop, test, debug, review, and repeat.
 
-After expiration, download latest release and replace old `cff.exe`.
+- Keep Fabric artifacts in a local folder structure that is easier to inspect and compare.
+- Use Git diffs and pull requests for Fabric changes.
+- Edit notebooks as standard Jupyter `.ipynb` files.
+- Push selected artifacts or full workspace trees back to Fabric.
+- Run SQL and schema checks from the terminal.
+- Upload and download Lakehouse `Files/` content through OneLake.
+- Run Python or notebooks in Fabric Lakehouse Livy sessions.
+- Diagnose pipeline failures and collect activity-run evidence quickly.
+- Give coding agents a concrete CLI for Fabric engineering tasks.
 
-## Requirements
+## What It Works With
 
-- Windows 10/11
-- Microsoft Azure CLI
-- Access to a Microsoft Fabric tenant and workspace
-- Microsoft Fabric permissions for target workspaces
+Code First Fabric currently focuses on these Microsoft Fabric item types:
 
-## Installation
+- `Lakehouse`
+- `DataPipeline`
+- `Notebook`
+- `VariableLibrary`
+- `Warehouse`
 
-1. Download latest `cff.exe` from Releases or by clicking [here](https://github.com/BEDigitalSolutions/Code-First-Fabric/releases/download/v2026.07.31/cff.exe)
-2. Move `cff.exe` to a folder in your PATH. Alternatively, run the following command in terminal, adding the correct download path to `cff.exe` and the desired directory to add to your PATH:
+It also works with Lakehouse `Files/`, Fabric SQL endpoints, Livy sessions, and pipeline job diagnostics.
 
-   ```powershell
-   $cffDownloadPath = "C:\path\to\cff.exe"
-   $dir = "C:\Tools\CFF"
-   
-   mkdir $dir -Force
-   cp $cffDownloadPath "$dir\cff.exe" -Force
-   
-   $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
-   [Environment]::SetEnvironmentVariable("Path", "$userPath;$dir", "User")
-   
-   $env:Path += ";$dir"
-   cff --help
-   ```
+## Typical Workflow
 
-3. Install Azure CLI by running the following command in terminal:
-
-   ```powershell
-   winget install --exact --id Microsoft.AzureCLI
-   ```
-
-4. Restart terminal. If using VS Code, restart it as well.
-5. Verify install:
-
-   ```powershell
-   cff --help
-   ```
-
-Full steps: [docs/installation.md](docs/installation.md)
-
-## Authentication
-
-Default login:
+Install `cff.exe`, sign in with Azure CLI, then start from a Fabric workspace you can access.
 
 ```powershell
 az login
-```
-
-Tenant has no Azure subscriptions:
-
-```powershell
-az login --allow-no-subscriptions
-```
-
-Browser login blocked or remote shell:
-
-```powershell
-az login --use-device-code
-```
-
-Force tenant:
-
-```powershell
-az login --tenant <tenant-id>
-```
-
-Device code + tenant:
-
-```powershell
-az login --use-device-code --tenant <tenant-id>
-```
-
-Full auth notes: [docs/configuration.md](docs/configuration.md)
-
-## Common Commands
-
-List workspaces:
-
-```powershell
 cff list-workspaces
-```
-
-Pull workspace artifacts:
-
-```powershell
 cff pull "<workspace-name>" .\fabric-source
-```
-
-Push local artifacts:
-
-```powershell
 cff push "<workspace-name>" .\fabric-source
 ```
 
-Run SQL against Lakehouse:
+For exact command syntax and examples, see [docs/usage.md](docs/usage.md).
 
-```powershell
-cff sql-lakehouse run "<workspace-name>" "<lakehouse-name>" "select 1"
-```
+## Installation
 
-Download Lakehouse Files content:
+Code First Fabric is distributed as a Windows executable named `cff.exe`.
 
-```powershell
-cff pull-lakehouse-files "<workspace-name>" "<lakehouse-name>" "path/in/Files" .\downloads
-```
+Download the latest release, put `cff.exe` in a folder on your PATH, install Microsoft Azure CLI, and verify with `cff --help`.
 
-Upload Lakehouse Files content:
+Full installation steps are in [docs/installation.md](docs/installation.md).
 
-```powershell
-cff upload-lakehouse-files "<workspace-name>" "<lakehouse-name>" .\local-file.txt "target/path"
-```
+## Evaluation Build
 
-Full usage: [docs/usage.md](docs/usage.md)
+The current public build is an evaluation build and expires on `2026-07-31` at `00:00 UTC`.
 
-## Updating
+When it expires, download the latest release and replace the old `cff.exe`. Future stable licensed builds are expected to change this distribution model.
 
-When build expires:
+## Documentation
 
-1. Download latest `cff.exe` from Releases.
-2. Replace old `cff.exe`.
-3. Run `cff --help`.
+| Document | Purpose |
+|---|---|
+| [Installation](docs/installation.md) | Download `cff.exe`, install Azure CLI, set PATH, verify the executable. |
+| [Configuration](docs/configuration.md) | Azure CLI login, tenant-specific login, device-code login, and service principal auth. |
+| [Usage](docs/usage.md) | Command examples for sync, SQL, schema, Lakehouse files, Livy, and diagnostics. |
+| [Troubleshooting](docs/troubleshooting.md) | Common setup, login, PATH, expiry, and hash-check issues. |
 
 ## File Integrity
 
-Each release can include `checksums.txt` with SHA256 hashes for release files.
-
-Verify downloaded executable:
+Releases can include `checksums.txt` with SHA256 hashes. To verify a downloaded executable:
 
 ```powershell
 Get-FileHash .\cff.exe -Algorithm SHA256
 ```
 
-Compare result with `checksums.txt` from same release.
-
-## Troubleshooting
-
-See [docs/troubleshooting.md](docs/troubleshooting.md).
+Compare the result with `checksums.txt` from the same release.

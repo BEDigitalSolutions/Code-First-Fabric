@@ -15,6 +15,12 @@ cff list-workspaces
 
 ## Workspace Sync
 
+`pull` and `push` are the core Code First Fabric workflow. Use them when you want a Fabric workspace represented as local files, then want to send local changes back to Fabric.
+
+Before pulling into an existing folder, review any local changes you care about. `pull` writes Fabric artifact files into the output tree.
+
+Before pushing, remember that `push` creates missing folders/items, updates existing item metadata and definitions, and can delete/recreate moved items to match the local folder structure.
+
 Pull Fabric artifacts into local folder:
 
 ```powershell
@@ -25,6 +31,13 @@ Push local artifacts into workspace:
 
 ```powershell
 cff push "<workspace-name>" .\fabric-source
+```
+
+Pull or push one artifact by passing a path inside the local artifact tree:
+
+```powershell
+cff pull "<workspace-name>" .\fabric-source "Folder/NotebookName.Notebook"
+cff push "<workspace-name>" .\fabric-source "Folder/NotebookName.Notebook"
 ```
 
 Upload missing workspace artifacts:

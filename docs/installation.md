@@ -1,5 +1,9 @@
 # Installation
 
+Code First Fabric is distributed to users as a Windows executable named `cff.exe`.
+
+This public repository is for using the tool, not building it from source.
+
 ## Requirements
 
 - Windows 10/11
@@ -7,44 +11,125 @@
 - Microsoft Fabric access
 - `cff.exe` from latest GitHub Release
 
-## Install Azure CLI
+## 1. Download CFF
+
+Download `cff.exe` from the latest GitHub Release:
+
+https://github.com/BEDigitalSolutions/Code-First-Fabric/releases
+
+The current evaluation build can also be downloaded directly:
+
+https://github.com/BEDigitalSolutions/Code-First-Fabric/releases/download/v2026.07.31/cff.exe
+
+## 2. Install CFF
+
+Create a tools folder and copy `cff.exe` into it:
+
+```powershell
+New-Item -ItemType Directory -Path C:\Tools\CFF -Force
+Copy-Item .\cff.exe C:\Tools\CFF\cff.exe -Force
+```
+
+Add `C:\Tools\CFF` to your user PATH:
+
+```powershell
+$dir = "C:\Tools\CFF"
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if (($userPath -split ";") -notcontains $dir) {
+  [Environment]::SetEnvironmentVariable("Path", "$userPath;$dir", "User")
+}
+$env:Path += ";$dir"
+```
+
+Verify the executable:
+
+```powershell
+cff --help
+```
+
+If `cff` is not found, open a new terminal. If using VS Code, restart VS Code too.
+
+## 3. Install Azure CLI
+
+Code First Fabric uses Azure CLI credentials by default.
 
 ```powershell
 winget install --exact --id Microsoft.AzureCLI
 ```
 
-Restart terminal after install.
+Restart your terminal after installing Azure CLI.
 
-## Install CFF
+## 4. Sign In
 
-1. Download latest `cff.exe` from Releases.
-2. Create tools folder:
+Use Azure CLI for the normal interactive login flow:
 
-   ```powershell
-   New-Item -ItemType Directory -Path C:\Tools\CFF -Force
-   ```
+```powershell
+az login
+cff login
+```
 
-3. Move `cff.exe` into `C:\Tools\CFF`.
-4. Add `C:\Tools\CFF` to user PATH.
-5. Open new terminal.
-6. Verify:
+If your tenant has no Azure subscriptions, use:
 
-   ```powershell
-   cff --help
-   ```
+```powershell
+az login --allow-no-subscriptions
+cff login
+```
 
-## Expiration
+More login options, including device-code login, tenant-specific login, and service principal authentication, are documented in [configuration.md](configuration.md).
 
-Evaluation builds expire on fixed UTC date embedded in `cff.exe`.
+## 5. Start Using CFF
 
-When build expires, download latest release and replace old file.
+List visible Fabric workspaces:
+
+```powershell
+cff list-workspaces
+```
+
+Pull a workspace into a local folder:
+
+```powershell
+cff pull "<workspace-name>" .\fabric-source
+```
+
+For command examples, see [usage.md](usage.md).
+
+## Shell Completion
+
+When run in an interactive terminal, `cff` may install shell completion hooks for supported shells and print a message asking you to restart the terminal.
+
+You can also print a completion script manually:
+
+```powershell
+cff completion powershell
+```
+
+Supported shells are `powershell`, `bash`, `zsh`, and `fish`.
+
+## Evaluation Build Expiration
+
+Current public builds are evaluation builds with a fixed UTC expiration date embedded in `cff.exe`.
+
+The current build expires on `2026-07-31` at `00:00 UTC`.
+
+When the build expires:
+
+1. Download the latest `cff.exe` from Releases.
+2. Replace the old file in your PATH folder.
+3. Open a new terminal.
+4. Run `cff --help`.
 
 ## Optional Hash Check
 
-Download `checksums.txt` from same release and run:
+Each release can include `checksums.txt`. Download it from the same release and run:
 
 ```powershell
 Get-FileHash .\cff.exe -Algorithm SHA256
 ```
 
-Hash must match `checksums.txt`.
+Compare the hash with `checksums.txt`.
+
+## Related Docs
+
+- [Configuration](configuration.md)
+- [Usage](usage.md)
+- [Troubleshooting](troubleshooting.md)
