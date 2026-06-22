@@ -1,34 +1,35 @@
 # Code First Fabric
 
-Code First Fabric is a command-line tool for data engineers who want to work with Microsoft Fabric from local files, Git, editors, terminals, and automated workflows.
+A command-line interface CLI to code in the Microsoft Fabric infrastructure.
 
-It lets you pull supported Fabric workspace artifacts into a local source tree, inspect and change them like code, push updates back to Fabric, run validation queries, move Lakehouse files, and diagnose failed pipeline runs without jumping between disconnected screens.
+Build on Fabric as a real data engineer should; use your terminal, your Git, your IDE (VS Code, T3, Cursor...), and your coding agents (Codex, Claude Code, Gemini, Deep Seek, Copilot...).
 
 ## Why Use It
 
-Microsoft Fabric is powerful, but day-to-day engineering work often needs more than a browser UI. Code First Fabric helps make Fabric projects easier to develop, test, debug, review, and repeat.
+Microsoft Fabric is a powerful infrastructure, but day-to-day engineering work often needs much more than a browser UI.
 
-- Keep Fabric artifacts in a local folder structure that is easier to inspect and compare.
+Fully coded development, testing, debugging, reviewing, deployment, and replication of Fabric projects.
+
+- Give coding agents a CLI and full context for Fabric engineering tasks.
+- Keep your Fabric artifacts in a local environment.
+- Code, run and debug Python, notebooks and pipelines from your terminal.
 - Use Git diffs and pull requests for Fabric changes.
-- Edit notebooks as standard Jupyter `.ipynb` files.
-- Push selected artifacts or full workspace trees back to Fabric.
+- Push artifacts or full workspaces back to Fabric.
 - Run SQL and schema checks from the terminal.
-- Upload and download Lakehouse `Files/` content through OneLake.
-- Run Python or notebooks in Fabric Lakehouse Livy sessions.
-- Diagnose pipeline failures and collect activity-run evidence quickly.
-- Give coding agents a concrete CLI for Fabric engineering tasks.
+- Upload and download Lakehouse files content.
+- Monitor pipeline failures and collect activity-run evidence quickly.
 
-## What It Works With
+## Supported artifacts
 
-Code First Fabric currently focuses on these Microsoft Fabric item types:
+Code First Fabric currently supports the following Microsoft Fabric item types:
 
 - `Lakehouse`
+- `Warehouse`
+- `Lakehouse files`
+- `SQL endpoints`
 - `DataPipeline`
 - `Notebook`
 - `VariableLibrary`
-- `Warehouse`
-
-It also works with Lakehouse `Files/`, Fabric SQL endpoints, Livy sessions, and pipeline job diagnostics.
 
 ## Typical Workflow
 
@@ -36,9 +37,13 @@ Install `cff.exe`, sign in with Azure CLI, then start from a Fabric workspace yo
 
 ```powershell
 az login
+cff --help
 cff list-workspaces
-cff pull "<workspace-name>" .\fabric-source
-cff push "<workspace-name>" .\fabric-source
+cff pull "<workspace-name>" .\your-local-path
+
+> "Start coding now!"
+
+cff push "<workspace-name>" .\your-local-path
 ```
 
 For exact command syntax and examples, see [docs/usage.md](docs/usage.md).
