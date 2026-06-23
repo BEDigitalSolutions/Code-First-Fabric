@@ -2,24 +2,18 @@
 
 Code First Fabric is distributed to users as a Windows executable named `cff.exe`.
 
-This public repository is for using the tool, not building it from source.
-
 ## Requirements
 
 - Windows 10/11
 - Microsoft Azure CLI
 - Microsoft Fabric access
-- `cff.exe` from latest GitHub Release
+- `cff.exe` from the latest GitHub Release
 
 ## 1. Download CFF
 
 Download `cff.exe` from the latest GitHub Release:
 
 https://github.com/BEDigitalSolutions/Code-First-Fabric/releases
-
-The current evaluation build can also be downloaded directly:
-
-https://github.com/BEDigitalSolutions/Code-First-Fabric/releases/download/v2026.07.31/cff.exe
 
 ## 2. Install CFF
 
@@ -82,7 +76,7 @@ More login options, including device-code login, tenant-specific login, and serv
 List visible Fabric workspaces:
 
 ```powershell
-cff list-workspaces
+cff list workspaces
 ```
 
 Pull a workspace into a local folder:
@@ -105,13 +99,11 @@ cff completion powershell
 
 Supported shells are `powershell`, `bash`, `zsh`, and `fish`.
 
-## Evaluation Build Expiration
+## Build Expiration
 
 Current public builds are evaluation builds with a fixed UTC expiration date embedded in `cff.exe`.
 
 The current build expires on `2026-07-31` at `00:00 UTC`.
-
-When the build expires:
 
 1. Download the latest `cff.exe` from Releases.
 2. Replace the old file in your PATH folder.

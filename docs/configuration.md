@@ -64,3 +64,35 @@ az account show
 ```
 
 `cff login` prints credential type, token expiry, and token preview.
+
+## Pull History Path
+
+`cff pull` stores raw Fabric definitions in pull history before writing the transformed local workspace tree. Raw definitions may contain secrets or sensitive configuration, so store pull history in a secure location.
+
+Show the effective history path:
+
+```powershell
+cff config hist-path
+```
+
+Set a persistent history path:
+
+```powershell
+cff config hist-path C:\CFF\history
+```
+
+Reset to the default path:
+
+```powershell
+cff config hist-path --reset
+```
+
+The default path is under the operating system temp directory, for example `%TEMP%\cff\pull` on Windows. Persistent config is stored in `%USERPROFILE%\.fabric-local-cli\config.json`.
+
+For a one-session override, set `CFF_HIST_PATH`:
+
+```powershell
+$env:CFF_HIST_PATH = "C:\CFF\history"
+```
+
+When `CFF_HIST_PATH` is set, it takes precedence over the configured path.

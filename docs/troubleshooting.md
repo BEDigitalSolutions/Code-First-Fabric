@@ -27,6 +27,12 @@ If tenant has no subscriptions:
 az login --allow-no-subscriptions
 ```
 
+Then verify CFF can resolve a token:
+
+```powershell
+cff login
+```
+
 ## Browser Login Fails
 
 Use device code:
@@ -52,6 +58,26 @@ az login --use-device-code --tenant <tenant-id>
 ## Build Expired
 
 Message says build expired. Download latest release and replace `cff.exe`.
+
+## Pull History Location
+
+`cff pull` writes raw Fabric definitions to pull history. If the default temp location is not suitable, set a secure persistent path:
+
+```powershell
+cff config hist-path C:\CFF\history
+```
+
+For a temporary override:
+
+```powershell
+$env:CFF_HIST_PATH = "C:\CFF\history"
+```
+
+Show the effective path:
+
+```powershell
+cff config hist-path
+```
 
 ## Check Current Azure Account
 

@@ -17,11 +17,12 @@ Fully coded development, testing, debugging, reviewing, deployment, and replicat
 - Push artifacts or full workspaces back to Fabric.
 - Run SQL and schema checks from the terminal.
 - Upload and download Lakehouse files content.
+- Push dependencies, run Fabric data pipelines, and collect diagnostics.
 - Monitor pipeline failures and collect activity-run evidence quickly.
 
-## Supported artifacts
+## Supported Artifacts
 
-Code First Fabric currently supports the following Microsoft Fabric item types:
+Code First Fabric currently supports these Microsoft Fabric item types:
 
 - `Lakehouse`
 - `Warehouse`
@@ -38,7 +39,7 @@ Install `cff.exe`, sign in with Azure CLI, then start from a Fabric workspace yo
 ```powershell
 az login
 cff --help
-cff list-workspaces
+cff list workspaces
 cff pull "<workspace-name>" .\your-local-path
 
 > "Start coding now!"
@@ -67,9 +68,9 @@ When it expires, download the latest release and replace the old `cff.exe`. Futu
 | Document | Purpose |
 |---|---|
 | [Installation](docs/installation.md) | Download `cff.exe`, install Azure CLI, set PATH, verify the executable. |
-| [Configuration](docs/configuration.md) | Azure CLI login, tenant-specific login, device-code login, and service principal auth. |
-| [Usage](docs/usage.md) | Command examples for sync, SQL, schema, Lakehouse files, Livy, and diagnostics. |
-| [Troubleshooting](docs/troubleshooting.md) | Common setup, login, PATH, expiry, and hash-check issues. |
+| [Configuration](docs/configuration.md) | Azure CLI login, tenant-specific login, device-code login, service principal auth, and pull history path. |
+| [Usage](docs/usage.md) | Command examples for sync, SQL, schema, Lakehouse files, Livy, pipeline runs, and diagnostics. |
+| [Troubleshooting](docs/troubleshooting.md) | Common setup, login, PATH, expiry, pull history, and hash-check issues. |
 
 ## File Integrity
 
