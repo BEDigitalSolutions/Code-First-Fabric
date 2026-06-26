@@ -129,18 +129,6 @@ cff push "<workspace-name-or-id>" .\fabric-source "Folder/NotebookName.Notebook"
 cff push "<workspace-name-or-id>" .\fabric-source .\fabric-source\Folder\NotebookName.Notebook\notebook-content.ipynb
 ```
 
-Create missing workspace folders and items from a local tree without the full update flow:
-
-```powershell
-cff upload-workspace "<workspace-name-or-id>" .\fabric-source
-```
-
-Update one pulled notebook definition using the notebook folder metadata:
-
-```powershell
-cff update-notebook .\fabric-source\Folder\NotebookName.Notebook
-```
-
 If no notebook directory is passed, `update-notebook` uses the current directory.
 
 ## Push and Run Pipeline
