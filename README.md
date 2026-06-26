@@ -18,19 +18,19 @@ Fully coded development, testing, debugging, reviewing, deployment, and replicat
 - Run SQL and schema checks from the terminal.
 - Upload and download Lakehouse files content.
 - Push dependencies, run Fabric data pipelines, and collect diagnostics.
-- Monitor pipeline failures and collect activity-run evidence quickly.
+- Inspect workspace jobs and schedules, monitor pipeline failures, and collect activity-run evidence quickly.
 
-## Supported Artifacts
+## Supported Fabric Items
 
-Code First Fabric currently supports these Microsoft Fabric item types:
+Code First Fabric currently pulls, pushes, and uploads these Microsoft Fabric item types as local files:
 
 - `Lakehouse`
 - `Warehouse`
-- `Lakehouse files`
-- `SQL endpoints`
 - `DataPipeline`
 - `Notebook`
 - `VariableLibrary`
+
+It also includes commands for workspace discovery, Lakehouse `Files/` upload/download, SQL endpoints, schema export, Livy execution, pipeline diagnostics, and job/schedule inspection.
 
 ## Typical Workflow
 
@@ -40,6 +40,7 @@ Install `cff.exe`, sign in with Azure CLI, then start from a Fabric workspace yo
 az login
 cff --help
 cff list workspaces
+cff list artifacts "<workspace-name>" --paths
 cff pull "<workspace-name>" .\your-local-path
 
 > "Start coding now!"
@@ -57,11 +58,11 @@ Download the latest release, put `cff.exe` in a folder on your PATH, install Mic
 
 Full installation steps are in [docs/installation.md](docs/installation.md).
 
-## Evaluation Build
+## Build Expiration
 
-The current public build is an evaluation build and expires on `2026-07-31` at `00:00 UTC`.
+Current builds can be permanent or built with an optional UTC expiration date. If an expiring build is used, `cff.exe` exits with a clear expiry message on or after its cutoff date.
 
-When it expires, download the latest release and replace the old `cff.exe`. Future stable licensed builds are expected to change this distribution model.
+When a build expires, download the latest release and replace the old `cff.exe`.
 
 ## Documentation
 
@@ -69,8 +70,8 @@ When it expires, download the latest release and replace the old `cff.exe`. Futu
 |---|---|
 | [Installation](docs/installation.md) | Download `cff.exe`, install Azure CLI, set PATH, verify the executable. |
 | [Configuration](docs/configuration.md) | Azure CLI login, tenant-specific login, device-code login, service principal auth, and pull history path. |
-| [Usage](docs/usage.md) | Command examples for sync, SQL, schema, Lakehouse files, Livy, pipeline runs, and diagnostics. |
-| [Troubleshooting](docs/troubleshooting.md) | Common setup, login, PATH, expiry, pull history, and hash-check issues. |
+| [Usage](docs/usage.md) | Command examples for discovery, sync, SQL, schema, Lakehouse files, Livy, pipeline runs, jobs, schedules, and diagnostics. |
+| [Troubleshooting](docs/troubleshooting.md) | Common setup, login, PATH, optional expiry, pull history, and hash-check issues. |
 
 ## File Integrity
 

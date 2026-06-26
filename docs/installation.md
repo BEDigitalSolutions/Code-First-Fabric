@@ -79,6 +79,12 @@ List visible Fabric workspaces:
 cff list workspaces
 ```
 
+Inspect items in a workspace, including folder paths:
+
+```powershell
+cff list artifacts "<workspace-name>" --paths
+```
+
 Pull a workspace into a local folder:
 
 ```powershell
@@ -101,9 +107,9 @@ Supported shells are `powershell`, `bash`, `zsh`, and `fish`.
 
 ## Build Expiration
 
-Current public builds are evaluation builds with a fixed UTC expiration date embedded in `cff.exe`.
+Builds can be permanent or can include a fixed UTC expiration date embedded in `cff.exe`.
 
-The current build expires on `2026-07-31` at `00:00 UTC`.
+If an expiring build reaches its cutoff date, replace it:
 
 1. Download the latest `cff.exe` from Releases.
 2. Replace the old file in your PATH folder.

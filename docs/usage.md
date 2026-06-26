@@ -5,16 +5,70 @@
 ```powershell
 cff --help
 cff <command> --help
+cff --help --json
+cff <command> --help --json
 ```
+
+Use `--json` with help when an agent or script needs machine-readable command metadata.
 
 ## Auth and Discovery
 
 ```powershell
 cff login
 cff list workspaces
+cff list workspaces --json
 ```
 
-`cff login` verifies the current credential and prints token metadata. `cff list workspaces` prints visible Fabric workspaces as JSON.
+`cff login` verifies the current credential and prints token metadata. `cff list workspaces` lists visible Fabric workspaces, sorted by `displayName`. It prints a table by default; `--json` prints structured output.
+
+List items in a workspace:
+
+```powershell
+cff list artifacts "<workspace-name-or-id>"
+cff list artifacts "<workspace-name-or-id>" --json
+```
+
+Include Fabric folder paths and sort by path:
+
+```powershell
+cff list artifacts "<workspace-name-or-id>" --paths
+```
+
+Filter artifacts by canonical Fabric item type:
+
+```powershell
+cff list artifacts "<workspace-name-or-id>" --type DataPipeline
+cff list artifacts "<workspace-name-or-id>" --paths --type=Notebook
+```
+
+`--type` is case-insensitive, but it expects canonical Fabric type names such as `DataPipeline`, `Notebook`, `Lakehouse`, `Warehouse`, `VariableLibrary`, or `SemanticModel`. Dashed aliases such as `data-pipeline` are not accepted.
+
+List item types present in a workspace:
+
+```powershell
+cff list types "<workspace-name-or-id>"
+cff list types "<workspace-name-or-id>" --json
+```
+
+List item job instances:
+
+```powershell
+cff list jobs "<workspace-name-or-id>"
+cff list jobs "<workspace-name-or-id>" 2026-06-01 2026-06-26
+cff list jobs "<workspace-name-or-id>" --type DataPipeline --json
+```
+
+With no dates, `list jobs` scans the last 24 hours. With one date, it scans from that date to now. With two dates, it scans the inclusive range. Date values can be `YYYY-MM-DD` or ISO-style UTC timestamps. Known job history sources include Fabric job instances for `DataPipeline` and `Notebook`, plus Power BI refresh history for model-based `SemanticModel` items.
+
+List enabled schedules:
+
+```powershell
+cff list schedules "<workspace-name-or-id>"
+cff list schedules "<workspace-name-or-id>" --type Notebook
+cff list schedules "<workspace-name-or-id>" --json
+```
+
+Known schedule sources include Fabric item schedules for `DataPipeline` and `Notebook`, plus Power BI refresh schedules for model-based `SemanticModel` items. Unsupported type filters return warnings instead of silently guessing.
 
 ## Configuration
 
@@ -35,6 +89,8 @@ cff config hist-path --reset
 Before pulling into an existing folder, review any local changes you care about. `pull` writes Fabric artifact files into the output tree and records raw pull history.
 
 Before pushing, remember that `push` creates missing folders/items, updates existing item metadata and definitions, recreates moved items, maps local logical IDs back to real remote IDs, patches notebook Lakehouse references, and converts Jupyter notebooks to Fabric source before upload.
+
+Workspace sync supports `Lakehouse`, `Warehouse`, `DataPipeline`, `Notebook`, and `VariableLibrary` item definitions.
 
 Pull Fabric artifacts into a local folder:
 

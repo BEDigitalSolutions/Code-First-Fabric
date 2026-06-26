@@ -57,7 +57,7 @@ az login --use-device-code --tenant <tenant-id>
 
 ## Build Expired
 
-Message says build expired. Download latest release and replace `cff.exe`.
+Message says build expired. The installed executable was built with an expiration date. Download the latest release and replace `cff.exe`.
 
 ## Pull History Location
 
