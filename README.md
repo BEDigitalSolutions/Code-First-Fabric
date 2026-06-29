@@ -4,6 +4,12 @@ A command-line interface CLI to code in the Microsoft Fabric infrastructure.
 
 Build on Fabric as a real data engineer should; use your terminal, your Git, your IDE (VS Code, T3, Cursor...), and your coding agents (Codex, Claude Code, Gemini, Deep Seek, Copilot...).
 
+## Quick Installation
+
+Click [here](https://github.com/BEDigitalSolutions/Code-First-Fabric/releases/download/v2026.07.31/cff.exe) to download CFF CLI.
+
+Follow instructions in [docs/installation.md](docs/installation.md) for further help.
+
 ## Why Use It
 
 Microsoft Fabric is a powerful infrastructure, but day-to-day engineering work often needs much more than a browser UI.
