@@ -4,11 +4,15 @@ A command-line interface CLI to code in the Microsoft Fabric infrastructure.
 
 Build on Fabric as a real data engineer should; use your terminal, your Git, your IDE (VS Code, T3, Cursor...), and your coding agents (Codex, Claude Code, Gemini, Deep Seek, Copilot...).
 
-## Quick Installation
+## Installation
+
+Code First Fabric is distributed as a Windows executable named `cff.exe`.
+
+Download the latest release, put `cff.exe` in a folder on your PATH, install Microsoft Azure CLI, and verify with `cff --help`.
+
+Full installation steps are in [docs/installation.md](docs/installation.md).
 
 Click [here](https://github.com/BEDigitalSolutions/Code-First-Fabric/releases/download/v2026.07.31/cff.exe) to download CFF CLI.
-
-Follow instructions in [docs/installation.md](docs/installation.md) for further help.
 
 ## Why Use It
 
@@ -55,14 +59,6 @@ cff push "<workspace-name>" .\your-local-path
 ```
 
 For exact command syntax and examples, see [docs/usage.md](docs/usage.md).
-
-## Installation
-
-Code First Fabric is distributed as a Windows executable named `cff.exe`.
-
-Download the latest release, put `cff.exe` in a folder on your PATH, install Microsoft Azure CLI, and verify with `cff --help`.
-
-Full installation steps are in [docs/installation.md](docs/installation.md).
 
 ## Build Expiration
 
