@@ -79,6 +79,22 @@ Show the effective path:
 cff config hist-path
 ```
 
+## Protected Items Skipped During Pull
+
+If a pull reports `ItemHasProtectedLabel`, the item has a protected sensitivity label. CFF skips that item and continues pulling the rest of the workspace.
+
+Fix: remove or change the label if your governance policy allows it, then pull again. Otherwise, keep the item out of the local workspace copy.
+
+## Usage Metrics Artifacts Skipped
+
+Full or folder pulls skip Fabric usage metrics `Report` and `SemanticModel` artifacts by default. These are service-generated artifacts and may not export cleanly.
+
+If you need one, run the explicit `cff pull` command printed in the warning to pull that artifact directly.
+
+## SQL Notebook Rejected
+
+`cff sql run file` accepts `.sql` files and SQL `.ipynb` notebooks only. If CFF says a notebook is not a SQL notebook, run a `.sql` file or use a notebook whose language metadata is SQL.
+
 ## Check Current Azure Account
 
 ```powershell

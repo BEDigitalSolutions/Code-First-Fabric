@@ -32,15 +32,19 @@ Fully coded development, testing, debugging, reviewing, deployment, and replicat
 
 ## Supported Fabric Items
 
-Code First Fabric currently pulls, pushes, and uploads these Microsoft Fabric item types as local files:
+Code First Fabric currently pulls and pushes these Microsoft Fabric item types as local folders/files:
 
 - `Lakehouse`
 - `Warehouse`
 - `DataPipeline`
 - `Notebook`
+- `Report`
+- `SemanticModel`
 - `VariableLibrary`
 
-It also includes commands for workspace discovery, Lakehouse `Files/` upload/download, SQL endpoints, schema export, Livy execution, pipeline diagnostics, and job/schedule inspection.
+Reports use `PBIR` definitions. Semantic Models use `TMDL` definitions. Lakehouse `Files/` content is handled by dedicated upload/download commands.
+
+It also includes commands for workspace discovery, Lakehouse `Files/` upload/download, SQL endpoints, schema export, Livy execution, pipeline diagnostics, job/schedule inspection, and HTML job reports.
 
 ## Typical Workflow
 
@@ -72,8 +76,9 @@ When a build expires, download the latest release and replace the old `cff.exe`.
 |---|---|
 | [Installation](docs/installation.md) | Download `cff.exe`, install Azure CLI, set PATH, verify the executable. |
 | [Configuration](docs/configuration.md) | Azure CLI login, tenant-specific login, device-code login, service principal auth, and pull history path. |
-| [Usage](docs/usage.md) | Command examples for discovery, sync, SQL, schema, Lakehouse files, Livy, pipeline runs, jobs, schedules, and diagnostics. |
+| [Usage](docs/usage.md) | Command examples for discovery, sync, SQL, schema, Lakehouse files, Livy, pipeline runs, jobs, schedules, HTML reports, and diagnostics. |
 | [Troubleshooting](docs/troubleshooting.md) | Common setup, login, PATH, optional expiry, pull history, and hash-check issues. |
+| [Patch Notes](PATCH_NOTES.md) | Brief notes for the latest updated release. |
 
 ## File Integrity
 

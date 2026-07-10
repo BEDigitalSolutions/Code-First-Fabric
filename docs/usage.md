@@ -41,7 +41,7 @@ cff list artifacts "<workspace-name-or-id>" --type DataPipeline
 cff list artifacts "<workspace-name-or-id>" --paths --type=Notebook
 ```
 
-`--type` is case-insensitive, but it expects canonical Fabric type names such as `DataPipeline`, `Notebook`, `Lakehouse`, `Warehouse`, `VariableLibrary`, or `SemanticModel`. Dashed aliases such as `data-pipeline` are not accepted.
+`--type` is case-insensitive, but it expects canonical Fabric type names such as `DataPipeline`, `Notebook`, `Lakehouse`, `Warehouse`, `Report`, `SemanticModel`, or `VariableLibrary`. Dashed aliases such as `data-pipeline` are not accepted.
 
 List item types present in a workspace:
 
@@ -56,9 +56,21 @@ List item job instances:
 cff list jobs "<workspace-name-or-id>"
 cff list jobs "<workspace-name-or-id>" 2026-06-01 2026-06-26
 cff list jobs "<workspace-name-or-id>" --type DataPipeline --json
+cff list jobs "<workspace-name-or-id>" --html .\jobs-report.html
 ```
 
 With no dates, `list jobs` scans the last 24 hours. With one date, it scans from that date to now. With two dates, it scans the inclusive range. Date values can be `YYYY-MM-DD` or ISO-style UTC timestamps. Known job history sources include Fabric job instances for `DataPipeline` and `Notebook`, plus Power BI refresh history for model-based `SemanticModel` items.
+
+Use `--html` to write an HTML report for one workspace. The report includes job status, schedule state, next execution, Fabric links, and day filtering. When `--html` is used without dates, the default start date is the UTC start of the day seven days ago.
+
+Generate a multi-workspace jobs report:
+
+```powershell
+cff list jobs-report "<workspace-a>" "<workspace-b>" --html .\jobs-report.html
+cff list jobs-report "<workspace-a>" "<workspace-b>" --html .\jobs-report.html --start-date 2026-06-01 --end-date 2026-06-26 --type DataPipeline --json
+```
+
+`list jobs-report` requires `--html`. It scans one or more workspaces and writes a single filterable HTML report.
 
 List enabled schedules:
 
@@ -88,9 +100,11 @@ cff config hist-path --reset
 
 Before pulling into an existing folder, review any local changes you care about. `pull` writes Fabric artifact files into the output tree and records raw pull history.
 
-Before pushing, remember that `push` creates missing folders/items, updates existing item metadata and definitions, recreates moved items, maps local logical IDs back to real remote IDs, patches notebook Lakehouse references, and converts Jupyter notebooks to Fabric source before upload.
+Before pushing, remember that `push` creates missing folders/items, updates existing item metadata and definitions, recreates moved items, maps local logical IDs back to real remote IDs, patches notebook Lakehouse references, and converts Python or SQL Jupyter notebooks to Fabric source before upload.
 
-Workspace sync supports `Lakehouse`, `Warehouse`, `DataPipeline`, `Notebook`, and `VariableLibrary` item definitions.
+Workspace sync supports `Lakehouse`, `Warehouse`, `DataPipeline`, `Notebook`, `Report`, `SemanticModel`, and `VariableLibrary` artifacts. Reports are pulled and pushed as `PBIR`; Semantic Models are pulled and pushed as `TMDL`. Pull converts Fabric Python and SQL notebooks into Jupyter notebooks for local editing.
+
+Full and folder pulls skip Fabric usage metrics `Report`/`SemanticModel` artifacts by default and print an explicit command if you want to pull one of them directly. Items protected by sensitivity labels are skipped and reported instead of failing the whole pull.
 
 Pull Fabric artifacts into a local folder:
 
@@ -129,7 +143,7 @@ cff push "<workspace-name-or-id>" .\fabric-source "Folder/NotebookName.Notebook"
 cff push "<workspace-name-or-id>" .\fabric-source .\fabric-source\Folder\NotebookName.Notebook\notebook-content.ipynb
 ```
 
-If no notebook directory is passed, `update-notebook` uses the current directory.
+When the target path points to a file inside an item folder, `push` resolves the owning item and pushes that item only.
 
 ## Push and Run Pipeline
 
@@ -183,7 +197,10 @@ Run SQL from a file:
 ```powershell
 cff sql run file "<workspace-name-or-id>" lakehouse "<lakehouse-name-or-id>" .\query.sql
 cff sql run file "<workspace-name-or-id>" warehouse "<warehouse-name-or-id>" .\query.sql
+cff sql run file "<workspace-name-or-id>" warehouse "<warehouse-name-or-id>" .\query.ipynb
 ```
+
+`run file` accepts `.sql` files and SQL `.ipynb` notebooks. Non-SQL notebooks are rejected.
 
 Print SQL connection metadata without running SQL:
 
