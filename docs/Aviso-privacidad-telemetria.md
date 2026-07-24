@@ -1,6 +1,6 @@
 # Aviso de privacidad: telemetría de Code First Fabric
 
-**Última actualización del borrador**: 23/07/2026
+**Última actualización**: 23/07/2026
 
 Code First Fabric (`cff`) recopila datos de uso seudónimos ("telemetría") para ayudarnos a mejorar el producto. Este aviso explica qué recopilamos, por qué y cómo desactivarlo. La telemetría está **activada por defecto**, pero la primera ejecución del CLI muestra este aviso y **no envía ningún dato**, de modo que puedes desactivarla antes de que se recopile nada.
 
