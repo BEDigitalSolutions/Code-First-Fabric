@@ -1,6 +1,6 @@
 # Aviso de privacidad: telemetría de Code First Fabric
 
-**Última actualización**: 23/07/2026
+**Última actualización**: 27/07/2026
 
 Code First Fabric (`cff`) recopila datos de uso seudónimos ("telemetría") para ayudarnos a mejorar el producto. Este aviso explica qué recopilamos, por qué y cómo desactivarlo. La telemetría está **activada por defecto**, pero la primera ejecución del CLI muestra este aviso y **no envía ningún dato**, de modo que puedes desactivarla antes de que se recopile nada.
 
@@ -51,7 +51,7 @@ Cuando ejecutas un comando reconocido de `cff`, el CLI envía un único evento c
 Al recibir el evento, nuestro servidor añade dos campos:
 
 - `receivedAtUtc`: fecha y hora de recepción.
-- `country`: código de país de dos letras (por ejemplo `ES`), derivado de la dirección IP de la conexión por nuestro servidor en el momento de la recepción. **Tu dirección IP se utiliza únicamente de forma transitoria en memoria para derivar el país y una HMAC efímera usada por el control antiabuso; el bucket conserva solo esa HMAC durante un periodo corto y la IP cruda se descarta. La IP no se escribe en nuestra base de datos ni en los registros de la aplicación.** No recopilamos ciudad, región ni ninguna ubicación más precisa que el país.
+- `country`: código de país de dos letras (por ejemplo `ES`). **Cuando el servidor puede determinar de forma fiable la dirección de origen de la conexión, la utiliza únicamente de forma transitoria en memoria para derivar el país y una referencia efímera (HMAC) usada por el control antiabuso, y la descarta: no se escribe en nuestra base de datos ni en los registros de la aplicación. Cuando no puede determinarse de forma fiable, el campo queda vacío y el control antiabuso opera de forma agregada sin usar tu dirección.** No recopilamos ciudad, región ni ninguna ubicación más precisa que el país.
 
 ## Qué datos no envía el CLI ni almacena el servicio
 
@@ -61,10 +61,24 @@ Los siguientes datos no forman parte del evento ni se guardan en la base de dato
 - Tokens de acceso ni credenciales de ningún tipo.
 - Los identificadores originales de tenant u objeto (solo su hash).
 - Argumentos de comandos, consultas SQL, código ni contenido de notebooks.
-- Rutas de archivos locales o remotas, variables de entorno, stdout, stderr ni mensajes de error.
+- Rutas de archivos locales o remotas, variables de entorno, stdout, stderr ni mensajes de error de tus comandos.
 - Nombres o descripciones de workspaces.
 - Nombre de equipo, usuario local ni identificadores de hardware.
-- Tu dirección IP no se almacena (ver arriba: servidor la procesa transitoriamente para derivar país y aplicar control antiabuso).
+- Tu dirección IP no se almacena: solo se procesa transitoriamente para derivar el país y aplicar el control antiabuso cuando el servidor puede determinar de forma fiable la dirección de origen; en caso contrario, el campo `country` queda vacío y el control antiabuso opera de forma agregada sin usar tu dirección.
+
+## Registros técnicos de monitorización
+
+El host de Azure Functions puede generar registros `FunctionAppLogs` cuando falla una de tres tareas internas: comprobación de disponibilidad SQL, canario de entrega o purga. El esquema bruto que Azure presenta a la transformación de ingesta puede incluir `Message`, `ExceptionDetails`, `ExceptionMessage`, `ExceptionType`, `ActivityId`, `FunctionInvocationId`, `HostInstanceId`, `HostVersion`, `RoleInstance`, `ProcessId`, `FunctionName`, `AppName`, metadatos de recurso, `Level`, `TimeGenerated` y `Location`.
+
+Antes de que esos registros terminen en nuestro workspace de Log Analytics, una regla de transformación de ingesta los limita a las combinaciones exactas de esas tres tareas y cinco códigos de error fijos. Descarta cualquier otra fila, sustituye `Message` por el código fijo reconocido y vacía texto libre, detalles de excepción, correlaciones, identificadores de invocación y de host, rol o proceso. Solo se conservan durante 30 días:
+
+- fecha y hora (`TimeGenerated`);
+- nombre exacto de la tarea (`FunctionName`);
+- código fijo normalizado (`Message`);
+- nivel técnico (`Level`); y
+- identificadores de recurso y suscripción Azure (`_ResourceId` y `_SubscriptionId`).
+
+Las ejecuciones correctas de las tareas se suprimen antes de ese envío, por lo que en funcionamiento saludable la ingesta esperada es prácticamente nula. La aplicación actual no escribe en estos registros body, headers, dirección IP, país, campos del evento de uso ni valores SQL. Se prohíben `DEBUG`, `AZURE_LOG_LEVEL`, llamadas de logging de aplicación y overrides de logging del runtime porque podrían ampliar los datos tratados. Cualquier registro o columna no aprobado bloquea la puesta en producción.
 
 ## Finalidad
 
@@ -72,7 +86,8 @@ Usamos estos datos exclusivamente para:
 
 - saber cuántas personas e instalaciones usan Code First Fabric y en qué países, de forma agregada;
 - saber qué comandos y versiones se usan, para priorizar mejoras y decidir cuándo retirar versiones antiguas;
-- dimensionar el proyecto y detectar problemas de adopción.
+- dimensionar el proyecto y detectar problemas de adopción; y
+- detectar fallos de disponibilidad, entrega o purga mediante códigos técnicos sanitizados.
 
 **No** usamos estos datos para publicidad, para venderlos o cederlos a terceros, para autorización o facturación, ni para vigilar o evaluar a personas concretas o su desempeño laboral. Las métricas son aproximadas por diseño y se tratan siempre como tales.
 
@@ -96,7 +111,7 @@ El tráfico entre tu equipo y nuestro servidor se envía directamente a la URL n
 
 - **Eventos de telemetría**: se eliminan automáticamente a los **90 días** como máximo (la purga se ejecuta con corte a 89 días).
 - **Copias de seguridad**: la base de datos mantiene copias de recuperación durante **7 días adicionales**, por lo que un dato borrado puede persistir en backups hasta ese plazo antes de desaparecer definitivamente.
-- **Registros técnicos de la plataforma** (salud del servicio, sin contenido de eventos): se conservan **30 días**.
+- **Registros técnicos de monitorización**: solo el subconjunto sanitizado descrito arriba; se conserva **30 días**.
 
 ## Tus derechos
 
