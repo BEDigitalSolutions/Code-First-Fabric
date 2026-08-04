@@ -51,7 +51,7 @@ Cuando ejecutas un comando reconocido de `cff`, el CLI envía un único evento c
 Al recibir el evento, nuestro servidor añade dos campos:
 
 - `receivedAtUtc`: fecha y hora de recepción.
-- `country`: código de país de dos letras (por ejemplo `ES`). **Cuando el servidor puede determinar de forma fiable la dirección de origen de la conexión, la utiliza únicamente de forma transitoria en memoria para derivar el país y una referencia efímera (HMAC) usada por el control antiabuso, y la descarta: no se escribe en nuestra base de datos ni en los registros de la aplicación. Cuando no puede determinarse de forma fiable, el campo queda vacío y el control antiabuso opera de forma agregada sin usar tu dirección.** No recopilamos ciudad, región ni ninguna ubicación más precisa que el país.
+- `country`: código de país de dos letras (por ejemplo `ES`), derivado de la dirección de origen de tu conexión en el momento de la recepción. **Esa dirección se utiliza únicamente de forma transitoria en memoria para obtener el código de país y se descarta de inmediato: no se escribe en nuestra base de datos ni en ningún registro, y no se emplea para ninguna otra finalidad.** El país es un dato **aproximado**, se usa solo para estadísticas agregadas y nunca para tomar decisiones sobre ti; si la dirección de origen no está disponible o no puede resolverse, el campo queda vacío. No recopilamos ciudad, región ni ninguna ubicación más precisa que el país. Nuestro control antiabuso funciona de forma agregada y **no utiliza tu dirección**.
 
 ## Qué datos no envía el CLI ni almacena el servicio
 
@@ -64,7 +64,7 @@ Los siguientes datos no forman parte del evento ni se guardan en la base de dato
 - Rutas de archivos locales o remotas, variables de entorno, stdout, stderr ni mensajes de error de tus comandos.
 - Nombres o descripciones de workspaces.
 - Nombre de equipo, usuario local ni identificadores de hardware.
-- Tu dirección IP no se almacena: solo se procesa transitoriamente para derivar el país y aplicar el control antiabuso cuando el servidor puede determinar de forma fiable la dirección de origen; en caso contrario, el campo `country` queda vacío y el control antiabuso opera de forma agregada sin usar tu dirección.
+- Tu dirección IP no se almacena: solo se procesa de forma transitoria en memoria para derivar el código de país y se descarta acto seguido; no se escribe en la base de datos ni en ningún registro, no se usa para el control antiabuso y no se conserva de ninguna forma, ni siquiera derivada.
 
 ## Registros técnicos
 
@@ -98,10 +98,13 @@ Los datos de telemetría se almacenan en **Microsoft Azure, región West Europe 
 
 El tráfico entre tu equipo y nuestro servidor se envía directamente a la URL nativa de la Function App en `azurewebsites.net`, cifrado con TLS gestionado por Microsoft, a nuestro servicio alojado en Microsoft Azure, región West Europe. No intervienen otros encargados intermedios ni se realizan transferencias internacionales fuera del Espacio Económico Europeo como parte del funcionamiento normal del servicio. Si en el futuro incorporamos una red de distribución, gateway o servicio de protección delante del endpoint, actualizaremos este aviso antes de aplicar el cambio.
 
+La resolución del código de país se realiza dentro de nuestro propio servicio, con una base de datos local incluida en el despliegue. No se consulta ningún servicio externo de geolocalización ni se comunica tu dirección a ningún tercero.
+
 ## Retención
 
 - **Eventos de telemetría**: se eliminan automáticamente a los **90 días** como máximo (la purga se ejecuta con corte a 89 días).
 - **Copias de seguridad**: la base de datos mantiene copias de recuperación durante **7 días adicionales**, por lo que un dato borrado puede persistir en backups hasta ese plazo antes de desaparecer definitivamente.
+- **Direcciones de origen**: no se conservan; se descartan en memoria tras derivar el código de país.
 - **Registros de aplicación**: no existen, según se describe en el apartado de registros técnicos.
 
 ## Tus derechos
