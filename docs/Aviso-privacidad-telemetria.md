@@ -1,6 +1,6 @@
 # Aviso de privacidad: telemetría de Code First Fabric
 
-**Última actualización**: 04/08/2026
+**Última actualización**: 05/08/2026
 
 Code First Fabric (`cff`) recopila datos de uso seudónimos ("telemetría") para ayudarnos a mejorar el producto. Este aviso explica qué recopilamos, por qué y cómo desactivarlo. La telemetría está **activada por defecto**, pero la primera ejecución del CLI muestra este aviso y **no envía ningún dato**, de modo que puedes desactivarla antes de que se recopile nada.
 
@@ -18,6 +18,8 @@ También puedes desactivarla mientras permanezca definida cualquiera de estas va
 CFF_TELEMETRY_DISABLED=1
 DO_NOT_TRACK=1
 ```
+
+La desactivación impide de inmediato que el CLI inicie nuevos envíos. Una solicitud que ya se hubiera iniciado antes de aplicar la desactivación puede terminar de llegar al servidor; cuando `cff telemetry disable` detecta un envío anterior todavía pendiente, lo indica expresamente y termina con código `1`.
 
 Puedes comprobar el estado en cualquier momento con `cff telemetry status` y ver exactamente qué identificadores genera tu instalación con `cff telemetry identity`. Los builds compilados desde el código fuente tienen la telemetría desactivada por defecto.
 
