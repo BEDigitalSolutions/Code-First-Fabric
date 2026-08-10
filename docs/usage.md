@@ -41,7 +41,7 @@ cff list artifacts "<workspace-name-or-id>" --type DataPipeline
 cff list artifacts "<workspace-name-or-id>" --paths --type=Notebook
 ```
 
-`--type` is case-insensitive, but it expects canonical Fabric type names such as `DataPipeline`, `Notebook`, `Lakehouse`, `Warehouse`, `Report`, `SemanticModel`, or `VariableLibrary`. Dashed aliases such as `data-pipeline` are not accepted.
+`--type` is case-insensitive, but it expects canonical Fabric type names such as `DataPipeline`, `Notebook`, `Lakehouse`, `Warehouse`, `Report`, `SemanticModel`, `VariableLibrary`, `GraphModel`, or `Ontology`. Dashed aliases such as `data-pipeline` are not accepted.
 
 List item types present in a workspace:
 
@@ -84,15 +84,15 @@ Known schedule sources include Fabric item schedules for `DataPipeline` and `Not
 
 ## Configuration
 
-Show, set, or reset the pull-history storage path:
+Show, set, or reset the shared Code First Fabric storage root:
 
 ```powershell
 cff config hist-path
-cff config hist-path C:\CFF\history
+cff config hist-path C:\CFF
 cff config hist-path --reset
 ```
 
-`pull` stores raw Fabric definitions in pull history. Choose a secure location because definitions may contain secrets or sensitive configuration.
+The storage root contains `pull` history, `push` staging, and the local monitor cache. Choose a secure location because these files can contain raw definitions, staged source copies, secrets, or sensitive configuration. See [configuration.md](configuration.md) for path migration and environment-variable behavior.
 
 ## Workspace Sync
 
@@ -102,7 +102,9 @@ Before pulling into an existing folder, review any local changes you care about.
 
 Before pushing, remember that `push` creates missing folders/items, updates existing item metadata and definitions, recreates moved items, maps local logical IDs back to real remote IDs, patches notebook Lakehouse references, and converts Python or SQL Jupyter notebooks to Fabric source before upload.
 
-Workspace sync supports `Lakehouse`, `Warehouse`, `DataPipeline`, `Notebook`, `Report`, `SemanticModel`, and `VariableLibrary` artifacts. Reports are pulled and pushed as `PBIR`; Semantic Models are pulled and pushed as `TMDL`. Pull converts Fabric Python and SQL notebooks into Jupyter notebooks for local editing.
+Workspace sync supports `Lakehouse`, `Warehouse`, `DataPipeline`, `Notebook`, `Report`, `SemanticModel`, `VariableLibrary`, `GraphModel`, and `Ontology` artifacts. Reports are pulled and pushed as `PBIR`; Semantic Models are pulled and pushed as `TMDL`; GraphModels use JSON definitions; Ontologies use preview JSON public definitions. Pull converts Fabric Python and SQL notebooks into Jupyter notebooks for local editing.
+
+Ontology support requires the Fabric Ontology preview to be enabled and a supported Fabric capacity. An explicit pull or push of an Ontology also includes its referenced supported items and related GraphModel dependencies.
 
 Full and folder pulls skip Fabric usage metrics `Report`/`SemanticModel` artifacts by default and print an explicit command if you want to pull one of them directly. Items protected by sensitivity labels are skipped and reported instead of failing the whole pull.
 
@@ -244,6 +246,37 @@ cff livy run-file "<workspace-name-or-id>" "<lakehouse-name-or-id>" .\notebook.i
 ```
 
 Optional flags include `--session-name`, `--environment-id`, and `--timeout-seconds`.
+
+## Local Monitor
+
+Launch the local Fabric monitor:
+
+```powershell
+cff view
+```
+
+By default, the command starts at `http://127.0.0.1:3000`, opens the browser, and selects another available local port if 3000 is already in use. Choose a port or keep the browser closed:
+
+```powershell
+cff view --port 8080
+cff view --no-open
+```
+
+Press Ctrl+C to stop the monitor. Its cache uses the configured Code First Fabric storage root unless `CFF_VIEW_CACHE_DIR` is set.
+
+## Telemetry
+
+Telemetry-enabled releases provide local status and preference commands:
+
+```powershell
+cff telemetry status
+cff telemetry status --check --json
+cff telemetry disable
+cff telemetry enable
+cff telemetry identity --json
+```
+
+`status --check` exits with an error when the telemetry endpoint is unavailable. `disable` applies to future commands and persists locally; `enable` restores telemetry when it is available in the installed build. Set `CFF_TELEMETRY_DISABLED=1` or `DO_NOT_TRACK=1` to suppress telemetry for the current environment. See the [telemetry privacy notice](Aviso-privacidad-telemetria.md).
 
 ## Diagnostics
 

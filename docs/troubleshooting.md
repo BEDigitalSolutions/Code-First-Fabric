@@ -59,18 +59,18 @@ az login --use-device-code --tenant <tenant-id>
 
 Message says build expired. The installed executable was built with an expiration date. Download the latest release and replace `cff.exe`.
 
-## Pull History Location
+## Storage Location or Migration
 
-`cff pull` writes raw Fabric definitions to pull history. If the default temp location is not suitable, set a secure persistent path:
+Code First Fabric stores pull history, push staging, and monitor cache under a shared storage root. If the default temp location is not suitable, set a secure persistent root:
 
 ```powershell
-cff config hist-path C:\CFF\history
+cff config hist-path C:\CFF
 ```
 
-For a temporary override:
+For a temporary pull-history override:
 
 ```powershell
-$env:CFF_HIST_PATH = "C:\CFF\history"
+$env:CFF_HIST_PATH = "C:\CFF\pull"
 ```
 
 Show the effective path:
@@ -78,6 +78,46 @@ Show the effective path:
 ```powershell
 cff config hist-path
 ```
+
+`cff config hist-path` cannot change or reset the root while `CFF_HIST_PATH` is set. Unset it first:
+
+```powershell
+Remove-Item Env:CFF_HIST_PATH
+```
+
+If migration reports a conflict, the target contains a different file with the same relative path. Use an empty target or resolve the conflicting file before retrying. If it reports that old-root cleanup failed, the new root is already active; remove the reported old directory manually after checking the copied files.
+
+## Local Monitor Does Not Start
+
+Run without a fixed port to let Code First Fabric choose an available local port:
+
+```powershell
+cff view --no-open
+```
+
+If a fixed port is required, choose one not already in use:
+
+```powershell
+cff view --port 8080
+```
+
+Source-mode development requires Bun and the monitor source directory. Set `CFF_VIEW_DIR` to that directory when Code First Fabric cannot find it.
+
+## Telemetry Settings
+
+Check whether telemetry is available and effective in the installed build:
+
+```powershell
+cff telemetry status
+```
+
+Disable it for future commands:
+
+```powershell
+cff telemetry disable
+```
+
+`CFF_TELEMETRY_DISABLED=1` and `DO_NOT_TRACK=1` suppress telemetry in the current environment. For privacy information, see the [telemetry privacy notice](Aviso-privacidad-telemetria.md).
 
 ## Protected Items Skipped During Pull
 

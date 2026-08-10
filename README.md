@@ -41,10 +41,12 @@ Code First Fabric currently pulls and pushes these Microsoft Fabric item types a
 - `Report`
 - `SemanticModel`
 - `VariableLibrary`
+- `GraphModel`
+- `Ontology`
 
 Reports use `PBIR` definitions. Semantic Models use `TMDL` definitions. Lakehouse `Files/` content is handled by dedicated upload/download commands.
 
-It also includes commands for workspace discovery, Lakehouse `Files/` upload/download, SQL endpoints, schema export, Livy execution, pipeline diagnostics, job/schedule inspection, and HTML job reports.
+It also includes commands for workspace discovery, Lakehouse `Files/` upload/download, SQL endpoints, schema export, Livy execution, pipeline diagnostics, job/schedule inspection, HTML job reports, a local Fabric monitor, and telemetry controls.
 
 ## Typical Workflow
 
@@ -75,10 +77,10 @@ When a build expires, download the latest release and replace the old `cff.exe`.
 | Document | Purpose |
 |---|---|
 | [Installation](docs/installation.md) | Download `cff.exe`, install Azure CLI, set PATH, verify the executable. |
-| [Configuration](docs/configuration.md) | Azure CLI login, tenant-specific login, device-code login, service principal auth, and pull history path. |
-| [Usage](docs/usage.md) | Command examples for discovery, sync, SQL, schema, Lakehouse files, Livy, pipeline runs, jobs, schedules, HTML reports, and diagnostics. |
-| [Troubleshooting](docs/troubleshooting.md) | Common setup, login, PATH, optional expiry, pull history, and hash-check issues. |
-| [Patch Notes](PATCH_NOTES.md) | Brief notes for the latest updated release. |
+| [Configuration](docs/configuration.md) | Azure CLI login, tenant-specific login, device-code login, service principal auth, and shared CFF storage. |
+| [Usage](docs/usage.md) | Command examples for discovery, sync, SQL, schema, Lakehouse files, Livy, monitor, telemetry, pipeline runs, jobs, schedules, HTML reports, and diagnostics. |
+| [Troubleshooting](docs/troubleshooting.md) | Common setup, login, PATH, optional expiry, storage migration, monitor, and hash-check issues. |
+| [Telemetry Privacy Notice](docs/Aviso-privacidad-telemetria.md) | Privacy information for telemetry-enabled releases. |
 
 ## File Integrity
 

@@ -65,34 +65,42 @@ az account show
 
 `cff login` prints credential type, token expiry, and token preview.
 
-## Pull History Path
+## CFF Storage
 
-`cff pull` stores raw Fabric definitions in pull history before writing the transformed local workspace tree. Raw definitions may contain secrets or sensitive configuration, so store pull history in a secure location.
+Code First Fabric uses a shared storage root for raw pull definitions, push staging, and the local monitor cache. These files can contain complete staged source copies, secrets, or sensitive configuration, so use a secure location.
 
-Show the effective history path:
+Show the effective storage root and derived paths:
 
 ```powershell
 cff config hist-path
 ```
 
-Set a persistent history path:
+Set a persistent storage root:
 
 ```powershell
-cff config hist-path C:\CFF\history
+cff config hist-path C:\CFF
 ```
 
-Reset to the default path:
+Reset to the default storage root:
 
 ```powershell
 cff config hist-path --reset
 ```
 
-The default path is under the operating system temp directory, for example `%TEMP%\cff\pull` on Windows. Persistent config is stored in `%USERPROFILE%\.fabric-local-cli\config.json`.
+For `C:\CFF`, Code First Fabric stores data in `C:\CFF\pull`, `C:\CFF\push`, and `C:\CFF\view\cache`. The default storage root is under the operating system temp directory, for example `%TEMP%\cff` on Windows. Persistent config is stored in `%USERPROFILE%\.fabric-local-cli\config.json`.
 
-For a one-session override, set `CFF_HIST_PATH`:
+When changing the root, Code First Fabric preflights the existing data, copies it, verifies the copies, then removes the old files. If a destination contains different files with the same relative path, the move stops without changing the configured root. If old-root cleanup fails after verification, the new root remains active and Code First Fabric reports the old location for manual cleanup.
+
+For a one-session pull-history override, set `CFF_HIST_PATH`:
 
 ```powershell
-$env:CFF_HIST_PATH = "C:\CFF\history"
+$env:CFF_HIST_PATH = "C:\CFF\pull"
 ```
 
-When `CFF_HIST_PATH` is set, it takes precedence over the configured path.
+When `CFF_HIST_PATH` is set, it takes precedence for pull history. Unset it before running `cff config hist-path <rootPath>` or `cff config hist-path --reset`:
+
+```powershell
+Remove-Item Env:CFF_HIST_PATH
+```
+
+`CFF_VIEW_CACHE_DIR` overrides only the derived monitor-cache path. It is not moved when the storage root changes.
