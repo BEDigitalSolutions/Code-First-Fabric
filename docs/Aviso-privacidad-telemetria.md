@@ -1,124 +1,124 @@
-# Aviso de privacidad: telemetría de Code First Fabric
+# Privacy notice: Code First Fabric telemetry
 
-**Última actualización**: 05/08/2026
+**Last updated**: 14 August 2026
 
-Code First Fabric (`cff`) recopila datos de uso seudónimos ("telemetría") para ayudarnos a mejorar el producto. Este aviso explica qué recopilamos, por qué y cómo desactivarlo. La telemetría está **activada por defecto**, pero la primera ejecución del CLI muestra este aviso y **no envía ningún dato**, de modo que puedes desactivarla antes de que se recopile nada.
+Code First Fabric (`cff`) collects pseudonymous usage data ("telemetry") to help us improve the product. This notice explains what we collect, why we collect it, and how to disable it. Telemetry is **enabled by default**, but the first CLI run displays this notice and **does not send any data**, so you can disable telemetry before any data is collected.
 
-## Cómo desactivar la telemetría
+## How to disable telemetry
 
-Este comando la desactiva de forma persistente:
+This command disables it persistently:
 
 ```text
 cff telemetry disable
 ```
 
-También puedes desactivarla mientras permanezca definida cualquiera de estas variables de entorno:
+You can also disable it while either of these environment variables remains defined:
 
 ```text
 CFF_TELEMETRY_DISABLED=1
 DO_NOT_TRACK=1
 ```
 
-La desactivación impide de inmediato que el CLI inicie nuevos envíos. Una solicitud que ya se hubiera iniciado antes de aplicar la desactivación puede terminar de llegar al servidor; cuando `cff telemetry disable` detecta un envío anterior todavía pendiente, lo indica expresamente y termina con código `1`.
+Disabling telemetry immediately prevents the CLI from starting new sends. A request already started before telemetry was disabled may finish reaching the server; when `cff telemetry disable` detects an earlier send that is still pending, it expressly reports this and exits with code `1`.
 
-Puedes comprobar el estado en cualquier momento con `cff telemetry status` y ver exactamente qué identificadores genera tu instalación con `cff telemetry identity`. Los builds compilados desde el código fuente tienen la telemetría desactivada por defecto.
+You can check the status at any time with `cff telemetry status` and see exactly which identifiers your installation generates with `cff telemetry identity`. Builds compiled from source code have telemetry disabled by default.
 
-## Responsable del tratamiento
+## Controller
 
-- **Responsable**: Consultores Tecnologías Digitales, SL
-- **NIF** : B67009696
-- **Contacto**: info@bdigitalsolutions.com
-- **Dirección**:
+- **Controller**: Consultores Tecnologías Digitales, SL
+- **NIF**: B67009696
+- **Contact**: info@bdigitalsolutions.com
+- **Address**:
 Carrer París, 209, 3 2
 08008 Barcelona
 Spain
 
-## Qué datos recopilamos
+## Data we collect
 
-Cuando ejecutas un comando reconocido de `cff`, el CLI envía un único evento con estos campos:
+When you run a recognized `cff` command, the CLI sends one event containing these fields:
 
-| Campo | Contenido | Ejemplo |
+| Field | Content | Example |
 |---|---|---|
-| `eventId` | Identificador aleatorio único de este evento | `uuid` |
-| `installationId` | Identificador aleatorio de la instalación, generado localmente la primera vez | `uuid` |
-| `userHash` | Huella seudónima de tu cuenta: hash SHA-256 del identificador de tenant y de objeto de tu sesión de Azure. No contiene ni permite obtener directamente tu nombre, correo ni identidad | `a3f1…` o vacío |
-| `principalType` | Si la sesión es de un usuario, un service principal o desconocida | `user` |
-| `command` | El nombre del comando ejecutado, **sin argumentos ni contenido** | `sql run query` |
-| `invocationType` | Si fue una ejecución o una consulta de ayuda | `execute` |
-| `productVersion` | Versión del ejecutable | `2026.07.20` |
-| `clientMode` | Tipo de distribución | `standalone-exe` |
-| `origin` | Si el comando vino del terminal o de un proceso interno de `cff view` | `terminal` |
-| `workspaceIds` | Identificadores GUID de los workspaces de Fabric implicados, **nunca sus nombres ni descripciones** | `["guid"]` |
+| `eventId` | Unique random identifier for this event | `uuid` |
+| `installationId` | Random installation identifier, generated locally the first time | `uuid` |
+| `userHash` | Pseudonymous fingerprint of your account: SHA-256 hash of the tenant and object identifiers from your Azure session. It does not contain or directly reveal your name, email address, or identity | `a3f1…` or empty |
+| `principalType` | Whether the session belongs to a user, a service principal, or an unknown principal | `user` |
+| `command` | Name of the command run, **without arguments or content** | `sql run query` |
+| `invocationType` | Whether this was an execution or a help request | `execute` |
+| `productVersion` | Executable version | `2026.08.14` |
+| `clientMode` | Distribution type | `standalone-exe` |
+| `origin` | Whether the command came from the terminal or an internal `cff view` process | `terminal` |
+| `workspaceIds` | GUID identifiers of the Fabric workspaces involved, **never their names or descriptions** | `["guid"]` |
 
-Al recibir el evento, nuestro servidor añade dos campos:
+When the event is received, our server adds two fields:
 
-- `receivedAtUtc`: fecha y hora de recepción.
-- `country`: código de país de dos letras (por ejemplo `ES`), derivado de la dirección de origen de tu conexión en el momento de la recepción. **Esa dirección se utiliza únicamente de forma transitoria en memoria para obtener el código de país y se descarta de inmediato: no se escribe en nuestra base de datos ni en ningún registro, y no se emplea para ninguna otra finalidad.** El país es un dato **aproximado**, se usa solo para estadísticas agregadas y nunca para tomar decisiones sobre ti; si la dirección de origen no está disponible o no puede resolverse, el campo queda vacío. No recopilamos ciudad, región ni ninguna ubicación más precisa que el país. Nuestro control antiabuso funciona de forma agregada y **no utiliza tu dirección**.
+- `receivedAtUtc`: date and time of receipt.
+- `country`: two-letter country code (for example, `ES`) derived from the source address of your connection at the time of receipt. **That address is used only transiently in memory to obtain the country code and is discarded immediately: it is not written to our database or any log, and it is not used for any other purpose.** Country is **approximate**, is used only for aggregate statistics, and is never used to make decisions about you; if the source address is unavailable or cannot be resolved, this field is empty. We do not collect city, region, or any location more precise than country. Our anti-abuse control operates in aggregate and **does not use your address**.
 
-## Qué datos no envía el CLI ni almacena el servicio
+## Data the CLI does not send and the service does not store
 
-Los siguientes datos no forman parte del evento ni se guardan en la base de datos de telemetría:
+The following data is not part of the event and is not stored in the telemetry database:
 
-- Tu nombre, correo electrónico ni ningún identificador humano directo.
-- Tokens de acceso ni credenciales de ningún tipo.
-- Los identificadores originales de tenant u objeto (solo su hash).
-- Argumentos de comandos, consultas SQL, código ni contenido de notebooks.
-- Rutas de archivos locales o remotas, variables de entorno, stdout, stderr ni mensajes de error de tus comandos.
-- Nombres o descripciones de workspaces.
-- Nombre de equipo, usuario local ni identificadores de hardware.
-- Tu dirección IP no se almacena: solo se procesa de forma transitoria en memoria para derivar el código de país y se descarta acto seguido; no se escribe en la base de datos ni en ningún registro, no se usa para el control antiabuso y no se conserva de ninguna forma, ni siquiera derivada.
+- Your name, email address, or any direct human identifier.
+- Access tokens or credentials of any kind.
+- Original tenant or object identifiers (only their hash).
+- Command arguments, SQL queries, code, or notebook content.
+- Local or remote file paths, environment variables, stdout, stderr, or error messages from your commands.
+- Workspace names or descriptions.
+- Computer name, local user, or hardware identifiers.
+- Your IP address is not stored: it is processed only transiently in memory to derive the country code and is then discarded immediately; it is not written to the database or any log, is not used for anti-abuse control, and is not retained in any form, including any derived form.
 
-## Registros técnicos
+## Technical logs
 
-El servicio no ingiere registros de aplicación: no se recogen mensajes, trazas, detalles de excepción, identificadores de invocación ni ningún otro registro generado por el código que procesa tu evento. La aplicación no escribe en ningún registro el cuerpo de la petición, las cabeceras, tu dirección IP, el país ni los campos del evento de uso.
+The service does not ingest application logs: it does not collect messages, traces, exception details, request identifiers, event identifiers, error identifiers, invocation identifiers, or any other log generated by the code that processes your event. The application does not write the request body, headers, your IP address, country, or usage-event fields to any log.
 
-Microsoft Azure genera, como parte del funcionamiento de su plataforma, métricas operativas agregadas del servicio, por ejemplo recuentos de ejecución o estado de disponibilidad. Esas métricas no contienen datos de tu evento ni identificadores tuyos, y se conservan conforme a las condiciones de la propia plataforma.
+As part of operating its platform, Microsoft Azure generates aggregate service operational metrics, such as execution counts or availability status. Those metrics contain neither your event data nor your identifiers and are retained under the platform's own terms.
 
-## Finalidad
+## Purpose
 
-Usamos estos datos exclusivamente para:
+We use this data exclusively to:
 
-- saber cuántas personas e instalaciones usan Code First Fabric y en qué países, de forma agregada;
-- saber qué comandos y versiones se usan, para priorizar mejoras y decidir cuándo retirar versiones antiguas;
-- dimensionar el proyecto y detectar problemas de adopción.
+- determine, in aggregate, how many people and installations use Code First Fabric and in which countries;
+- determine which commands and versions are used, to prioritize improvements and decide when to retire old versions;
+- size the project and identify adoption problems.
 
-**No** usamos estos datos para publicidad, para venderlos o cederlos a terceros, para autorización o facturación, ni para vigilar o evaluar a personas concretas o su desempeño laboral. Las métricas son aproximadas por diseño y se tratan siempre como tales.
+We **do not** use this data for advertising, to sell it or disclose it to third parties, for authorization or billing, or to monitor or evaluate specific people or their work performance. Metrics are approximate by design and are always treated as such.
 
-## Base jurídica
+## Legal basis
 
-Tratamos estos datos sobre la base de nuestro **interés legítimo** (art. 6.1.f RGPD) en comprender y mejorar el uso del producto, tras evaluar que el impacto sobre los usuarios es mínimo: los datos son seudónimos, de bajo volumen, sin contenido de trabajo, con retención corta y con un mecanismo de oposición inmediato y gratuito (la desactivación descrita arriba). Puedes oponerte al tratamiento en cualquier momento desactivando la telemetría o escribiéndonos.
+We process this data on the basis of our **legitimate interests** (Article 6(1)(f) GDPR) in understanding and improving product use, after assessing that the impact on users is minimal: the data is pseudonymous, low-volume, contains no work content, has a short retention period, and is subject to an immediate and free right-to-object mechanism (the disabling options described above). You may object to processing at any time by disabling telemetry or contacting us.
 
-Iniciar sesión con `az login` es un mecanismo de autenticación de Azure ajeno a este proyecto y **no constituye consentimiento** a esta telemetría.
+Signing in with `az login` is an Azure authentication mechanism independent of this project and **does not constitute consent** to this telemetry.
 
-## Seudonimización, no anonimización
+## Pseudonymization, not anonymization
 
-El campo `userHash` es un dato **seudónimo, no anónimo**: quien conozca tu tenant ID y object ID podría recalcular el hash y correlacionarlo. Por eso lo tratamos como dato personal a todos los efectos, con acceso restringido y las garantías descritas en este aviso.
+The `userHash` field is **pseudonymous, not anonymous** data: someone who knows your tenant ID and object ID could recompute the hash and correlate it. We therefore treat it as personal data for all purposes, with restricted access and the safeguards described in this notice.
 
-## Dónde se almacenan los datos y quién los trata
+## Where data is stored and who processes it
 
-Los datos de telemetría se almacenan en **Microsoft Azure, región West Europe (Unión Europea)**. Microsoft actúa como encargado del tratamiento conforme a sus condiciones de servicios en línea.
+Telemetry data is stored in **Microsoft Azure, West Europe region (European Union)**. Microsoft acts as processor under its online services terms.
 
-El tráfico entre tu equipo y nuestro servidor se envía directamente a la URL nativa de la Function App en `azurewebsites.net`, cifrado con TLS gestionado por Microsoft, a nuestro servicio alojado en Microsoft Azure, región West Europe. No intervienen otros encargados intermedios ni se realizan transferencias internacionales fuera del Espacio Económico Europeo como parte del funcionamiento normal del servicio. Si en el futuro incorporamos una red de distribución, gateway o servicio de protección delante del endpoint, actualizaremos este aviso antes de aplicar el cambio.
+Traffic between your computer and our server is sent directly to the Function App's native URL at `azurewebsites.net`, encrypted with Microsoft-managed TLS, to our service hosted in Microsoft Azure, West Europe region. No other intermediate processors are involved, and no international transfers outside the European Economic Area occur as part of normal service operation. If we add a content delivery network, gateway, or protection service in front of the endpoint in the future, we will update this notice before making that change.
 
-La resolución del código de país se realiza dentro de nuestro propio servicio, con una base de datos local incluida en el despliegue. No se consulta ningún servicio externo de geolocalización ni se comunica tu dirección a ningún tercero.
+Country-code resolution occurs within our own service using a local database included in the deployment. No external geolocation service is queried, and your address is not disclosed to any third party.
 
-## Retención
+## Retention
 
-- **Eventos de telemetría**: se eliminan automáticamente a los **90 días** como máximo (la purga se ejecuta con corte a 89 días).
-- **Copias de seguridad**: la base de datos mantiene copias de recuperación durante **7 días adicionales**, por lo que un dato borrado puede persistir en backups hasta ese plazo antes de desaparecer definitivamente.
-- **Direcciones de origen**: no se conservan; se descartan en memoria tras derivar el código de país.
-- **Registros de aplicación**: no existen, según se describe en el apartado de registros técnicos.
+- **Telemetry events**: automatically deleted after no more than **90 days** (purge runs with an 89-day cutoff).
+- **Backups**: the database keeps recovery backups for **7 additional days**, so deleted data may remain in backups for up to that period before disappearing permanently.
+- **Source addresses**: not retained; discarded in memory after deriving the country code.
+- **Application logs**: none exist, as described in the technical logs section.
 
-## Tus derechos
+## Your rights
 
-Tienes derecho a acceder a tus datos, a que los borremos y a oponerte al tratamiento. Para ejercerlos, escribe a info@bdigitalsolutions.com. Como no conocemos tu identidad real, para localizar tus datos necesitarás indicarnos tu `userHash` o `installationId`, que puedes obtener con:
+You have the right to access your data, have it erased, and object to processing. To exercise these rights, email info@bdigitalsolutions.com. Because we do not know your real identity, to locate your data you will need to provide your `userHash` or `installationId`, which you can obtain with:
 
 ```text
 cff telemetry identity
 ```
 
-Ten en cuenta que necesitaremos una verificación razonable y proporcionada de que esos identificadores te corresponden; conocer un hash no acredita por sí solo la titularidad. También tienes derecho a presentar una reclamación ante la autoridad de control competente; en España, la Agencia Española de Protección de Datos (www.aepd.es).
+We will need reasonable and proportionate verification that those identifiers belong to you; knowing a hash alone does not prove ownership. You also have the right to lodge a complaint with the competent supervisory authority; in Spain, the Agencia Española de Protección de Datos (www.aepd.es).
 
-## Cambios en este aviso
+## Changes to this notice
 
-Si cambiamos qué datos se recopilan o con qué finalidad, actualizaremos este aviso y la fecha de cabecera antes de aplicar el cambio, y lo señalaremos en las notas de la versión correspondiente del CLI.
+If we change what data is collected or the purposes for which it is collected, we will update this notice and its header date before making the change and will identify the change in the release notes for the corresponding CLI version.
