@@ -48,9 +48,57 @@ Reports use `PBIR` definitions. Semantic Models use `TMDL` definitions. Lakehous
 
 It also includes commands for workspace discovery, Lakehouse `Files/` upload/download, SQL endpoints, schema export, Livy execution, pipeline diagnostics, job/schedule inspection, HTML job reports, a local Fabric monitor, and telemetry controls.
 
-## Typical Workflow
+## Typical Workflows
 
-Install `cff.exe`, sign in with Azure CLI, then start from a Fabric workspace you can access.
+### 🚀 AI Agent Workflow 🚀
+
+**AI + CFF: BUILD FASTER. BUILD BETTER.**
+
+AI coding agents excel at working with Microsoft Fabric through CFF on both greenfield and brownfield projects. They can understand the full project context and modify Fabric artifacts directly.
+
+**1. Install CFF**
+
+Follow the [installation guide](docs/installation.md) to download `cff.exe` and add it to your PATH.
+
+**2. Sign in with Azure CLI**
+
+```powershell
+az login
+```
+
+**3. Open your preferred IDE and AI coding agent**
+
+*Compatible with VS Code, Cursor, and more.*
+
+Prompt your preferred coding agent to explore the CLI:
+
+```
+"Explore the CLI: cff --help"
+```
+
+**4. Start the revolution**
+
+Prompt your agent to download a specific workspace and diagnose an error:
+
+```
+"Download the workspace [workspace-name] and determine why the pipeline [pipeline-name] failed yesterday"
+```
+
+The agent can inspect your workspace, help you identify errors, and modify Fabric artifacts.
+
+**Enjoy a smooth, collaborative workflow between you, your AI agent, and Microsoft Fabric.**
+
+**The sky is the limit! 🚀**
+
+### Terminal Workflow
+
+**1. Install CFF**
+
+Follow the [installation guide](docs/installation.md) to download `cff.exe` and add it to your PATH.
+
+**2. Sign in and start working**
+
+Sign in with Azure CLI, then start from a Fabric workspace you can access.
 
 ```powershell
 az login
