@@ -50,45 +50,44 @@ It also includes commands for workspace discovery, Lakehouse `Files/` upload/dow
 
 ## Typical Workflows
 
-### 🚀 AI Agent Workflow 🚀
+### 🚀 AI Agent Workflow
 
-**AI + CFF: BUILD FASTER. BUILD BETTER.**
+**YOU + AI + CFF: BUILD FASTER. BUILD BETTER.**
 
-AI coding agents excel at working with Microsoft Fabric through CFF on both greenfield and brownfield projects. They can understand the full project context and modify Fabric artifacts directly.
+AI coding agents excel at working with Microsoft Fabric through Code First Fabric on both greenfield and brownfield projects.
 
-**1. Install CFF**
+The coding agent seamlessly creates and modifies Fabric artifacts at your convenience.
 
-Follow the [installation guide](docs/installation.md) to download `cff.exe` and add it to your PATH.
+**1. Sign in with the Azure CLI**
 
-**2. Sign in with Azure CLI**
+In your terminal:
 
-```powershell
+```
 az login
 ```
 
-**3. Open your preferred IDE and AI coding agent**
+**2. Open your preferred IDE and AI coding agent**
 
-*Compatible with VS Code, Cursor, and more.*
+Compatible with any IDE (VS Code, Cursor, Terminal, etc.) and any coding agent (GPT, Claude, Gemini, Qwen, Kimi, etc.).
 
 Prompt your preferred coding agent to explore the CLI:
 
 ```
-"Explore the CLI: cff --help"
+cff --help
 ```
 
-**4. Start the revolution**
+**3. Start the revolution**
 
-Prompt your agent to download a specific workspace and diagnose an error:
+Prompt your agent to get a specific workspace:
 
 ```
-"Download the workspace [workspace-name] and determine why the pipeline [pipeline-name] failed yesterday"
+Get the following Fabric workspace: [workspace-name]
 ```
-
-The agent can inspect your workspace, help you identify errors, and modify Fabric artifacts.
 
 **Enjoy a smooth, collaborative workflow between you, your AI agent, and Microsoft Fabric.**
 
 **The sky is the limit! 🚀**
+
 
 ### Terminal Workflow
 
